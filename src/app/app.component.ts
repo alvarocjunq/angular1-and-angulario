@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   constructor(private appRef: ApplicationRef, private eventManager: EventManager) { }
 
   ngOnInit() {
-    document.domain = 'herokuapp.com';
+    // document.domain = 'herokuapp.com';
     for (let i = 0, len = ROUTES.length; i < len; i++) {
       this[ROUTES[i].application].nativeElement.src = `${ROUTES[i].url}`;
     }
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     // this[_app.application].nativeElement.src = `${_app.url}${_route.path}`;
 
     this[_app.application].nativeElement.dispatchEvent(new Event('getMessage'));
-    window.postMessage(_route.path, _app.url);
+    window.frames['projetobase'].postMessage(_route.path, '*');
     // window.name = _route.path;
   }
 }
