@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   constructor(private appRef: ApplicationRef, private eventManager: EventManager) { }
 
   ngOnInit() {
+    document.domain = 'herokuapp.com';
     for (let i = 0, len = ROUTES.length; i < len; i++) {
       this[ROUTES[i].application].nativeElement.src = `${ROUTES[i].url}`;
     }
