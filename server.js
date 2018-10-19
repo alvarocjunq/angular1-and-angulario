@@ -9,8 +9,9 @@ app.use(express.static(__dirname + '/dist/angular6-hull'));
 
 app.get('/', function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('X-Frame-Options', 'ALLOWALL');
     res.sendFile(path.join(__dirname + '/dist/angular6-hull/index.html'));
 });
 
 // Start the app by listening on the default Heroku port
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8082);

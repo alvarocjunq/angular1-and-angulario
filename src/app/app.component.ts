@@ -1,51 +1,33 @@
-import { Component, Renderer2, ViewChild, ElementRef, ApplicationRef, OnInit } from '@angular/core';
-import { ROUTES, Application, Route } from './routes';
-import { EventManager } from '../../node_modules/@angular/platform-browser';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Applications } from './applications';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  isAngularJS = true;
-  isAngular = true;
+export class AppComponent {
 
-  @ViewChild('projetobase')
-  projetobase: ElementRef;
+  @ViewChild('angularjs')
+  angularjs: ElementRef;
 
-  @ViewChild('scaffolding')
-  scaffolding: ElementRef;
+  @ViewChild('angular')
+  angular: ElementRef;
 
-  constructor(private appRef: ApplicationRef, private eventManager: EventManager) { }
+  route(application: string, route: string) {
 
-  ngOnInit() {
-    // document.domain = 'herokuapp.com';
-    for (let i = 0, len = ROUTES.length; i < len; i++) {
-      this[ROUTES[i].application].nativeElement.src = `${ROUTES[i].url}`;
-    }
-  }
+    const url = Applications
+      // Ocultar iframes
+      .map(app => {
+        this[app.application].nativeElement.style.display = 'none';
+        return app;
+      })
+      // Pegar URL
+      .find(app => app.application === application).url;
 
-  activeRoute(application: string, route: string) {
-
-    // Pegar a aplicacao clicada
-    const _app = ROUTES.find((app: Application) => {
-      return app.application === application;
-    });
-
-    const _route = _app.routes.find((value: Route) => {
-      return value.path === route;
-    });
-
-    for (let i = 0, len = ROUTES.length; i < len; i++) {
-      this[ROUTES[i].application].nativeElement.style.display = 'none';
-    }
-
-    this[_app.application].nativeElement.style.display = 'block';
-    // this[_app.application].nativeElement.src = `${_app.url}${_route.path}`;
-
-    this[_app.application].nativeElement.dispatchEvent(new Event('getMessage'));
-    window.frames['projetobase'].postMessage(_route.path, '*');
-    // window.name = _route.path;
+    // Mostrar iframes e setar url
+    const iframe = this[application].nativeElement;
+    iframe.style.display = 'block';
+    iframe.src = `${url}${route}`;
   }
 }
